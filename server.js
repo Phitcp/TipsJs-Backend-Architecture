@@ -1,7 +1,8 @@
 const app = require('./src/app');
 
-const server = app.listen(3000, () => {
-    console.log('App start successfully');
+const PORT = process.env.PORT || 3000;
+const server = app.listen(PORT, () => {
+    console.log('App start successfully on', PORT);
 });
 
 process.on('SIGINT', (_) => {

@@ -1,17 +1,35 @@
 'use strict';
 
-const env = 'dev';
 const mongoose = require('mongoose');
 const {
     countConnect,
     checkOverLoad,
 } = require('../helpers/dbsHelpers/check.connect');
-const connectString = 'mongodb://localhost:27017/shopDev';
-if (env === 'dev') {
-    mongoose.set('debug', true);
-    mongoose.set('debug', { color: true });
-}
 
+const config = require('../config/config.mongo');
+const { db } = config;
+const connectString = `mongodb://${db.host}:${db.port}/${db.name}`;
+
+const connectToMongo = () => {
+    if (process.env.ENV === 'dev') {
+        mongoose.set('debug', true);
+        mongoose.set('debug', { color: true });
+    }
+
+    mongoose
+        .connect(connectString)
+        .then((_) => {
+            console.log('Connect to mongo successfully, key', connectString);
+            countConnect();
+        })
+        .catch((err) =>
+            console.log('Something wrong happen when connect to db', err)
+        );
+};
+
+const connecter = {
+    mongo: connectToMongo,
+};
 class DataBase {
     constructor(type = 'mongo') {
         this.type = type;
@@ -19,26 +37,7 @@ class DataBase {
     }
     // connect
     connect() {
-        if (this.type === 'mongo') {
-            if (env === 'dev') {
-                mongoose.set('debug', true);
-                mongoose.set('debug', { color: true });
-            }
-
-            mongoose
-                .connect(connectString)
-                .then((_) => {
-                    console.log('Connect to mongo successfully');
-                    countConnect();
-                    checkOverLoad();
-                })
-                .catch((err) =>
-                    console.log(
-                        'Something wrong happen when connect to db',
-                        err
-                    )
-                );
-        }
+        connecter[this.type]();
     }
 
     static getInstance(dbType) {
