@@ -21,9 +21,13 @@ const tokenSchema = new Schema(
             required: true,
             trim: true,
         },
-        refreshToken: {
+        refreshTokenUsed: {
             type: Array,
             default: [],
+        },
+        refreshToken: {
+            type: String,
+            required: true,
         },
     },
     {

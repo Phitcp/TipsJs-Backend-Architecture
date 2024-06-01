@@ -4,10 +4,19 @@
 
 POST {{url_dev}}/shop/signup
 content-type: application/json
-x-api-key: 0fd24aa7bd19d364b508b6068c9acd166ec175feeb36e6d3c8796b652dfa0ccb387fbbc1bd7a247ef1bc72ddb409238325368ece39eda9359d50430c768c52e2
 
 {
-    "name": "Shop Phi",
-    "email": "mail9@gmail.com",
+    "name": "Shop Phi1",
+    "email": "mail1@gmail.com",
+    "password": "password"
+}
+//
+
+POST {{url_dev}}/shop/login
+content-type: application/json
+
+{
+    "name": "Shop Phi1",
+    "email": "mail1@gmail.com",
     "password": "password"
 }
